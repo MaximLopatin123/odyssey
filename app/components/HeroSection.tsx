@@ -46,14 +46,14 @@ export default function HeroSection() {
           >
             <source src="/hero.mp4" type="video/mp4" />
           </video>
-          {/* Photo on top, hidden until video ends */}
+          {/* Photo on top — same size as video, hidden until video ends */}
           <Image
             ref={imageRef}
             src="/helmet.jpg"
             alt=""
             width={680}
             height={680}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-contain"
             style={{ opacity: 0 }}
             priority
           />

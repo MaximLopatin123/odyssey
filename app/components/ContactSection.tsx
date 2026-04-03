@@ -18,28 +18,31 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-20">
           {/* Map placeholder + info */}
           <div className="space-y-12">
-            {/* Map embed placeholder */}
-            <div className="relative w-full aspect-[16/7] bg-[#0d0d0d] border border-white/8 overflow-hidden flex items-center justify-center">
-              <div className="absolute inset-0 opacity-20"
-                style={{
-                  backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(0,229,204,0.15) 31px, rgba(0,229,204,0.15) 32px), repeating-linear-gradient(90deg, transparent, transparent 31px, rgba(0,229,204,0.15) 31px, rgba(0,229,204,0.15) 32px)`
-                }}
+            {/* Yandex Maps embed */}
+            <a
+              href="https://yandex.ru/maps/?text=Киргизская+улица+19/1+Ростов-на-Дону"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative w-full aspect-[16/7] bg-[#0d0d0d] border border-white/8 overflow-hidden block group"
+            >
+              <iframe
+                src="https://yandex.ru/map-widget/v1/?ll=39.714&z=16&pt=39.714,47.238&text=Киргизская+улица+19/1+Ростов-на-Дону"
+                className="w-full h-full border-0 grayscale contrast-125 opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+                allowFullScreen
               />
-              <div className="relative z-10 text-center">
-                <div className="w-4 h-4 bg-[#00e5cc] rounded-full mx-auto mb-3 animate-ping" />
-                <p className="font-mono text-xs text-[#00e5cc]/70 tracking-widest uppercase">
-                  ул. Победы, д. 12
-                </p>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 to-transparent pointer-events-none" />
+              <div className="absolute bottom-3 right-3 font-mono text-[10px] tracking-widest uppercase text-[#00e5cc]/70 bg-[#080808]/80 px-2 py-1">
+                Открыть карту →
               </div>
-            </div>
+            </a>
 
             {/* Info grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {[
                 {
                   label: 'Адрес',
-                  value: 'ул. Победы, 12',
-                  sub: 'Центральный район',
+                  value: 'Киргизская, 19/1',
+                  sub: 'Чкаловский м-н, 1 этаж',
                 },
                 {
                   label: 'Режим работы',
