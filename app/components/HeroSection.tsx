@@ -14,79 +14,18 @@ export default function HeroSection() {
     video.loop = false;
     video.preload = 'auto';
 
-    let direction: 1 | -1 = 1;
-    let rafId: number | null = null;
-    let active = true;
-    let lastTs = 0;
-    const SPEED = 1.0;
-
-    function startReverse() {
-      if (!active) return;
-      lastTs = 0;
-      rafId = requestAnimationFrame(reverseFrame);
-    }
-
-    function reverseFrame(ts: number) {
-      if (!active || !video) return;
-      const dt = lastTs ? (ts - lastTs) / 1000 : 0;
-      lastTs = ts;
-      video.currentTime = Math.max(0, video.currentTime - dt * SPEED);
-      if (video.currentTime <= 0.05) {
-        direction = 1;
-        video.currentTime = 0;
-        video.play().catch(() => {});
-        return;
-      }
-      rafId = requestAnimationFrame(reverseFrame);
-    }
-
-    function onEnded() {
-      direction = -1;
-      if (rafId) cancelAnimationFrame(rafId);
-      startReverse();
-    }
-
-    function onTimeUpdate() {
-      if (!video) return;
-      if (direction === 1 && video.duration && video.currentTime >= video.duration - 0.15) {
-        video.pause();
-        onEnded();
-      }
-    }
-
-    video.addEventListener('ended', onEnded);
-    video.addEventListener('timeupdate', onTimeUpdate);
-
     video.addEventListener('canplay', () => {
       video.style.opacity = '1';
     });
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!video) return;
-        if (entries[0].isIntersecting) {
-          active = true;
-          if (direction === 1) video.play().catch(() => {});
-          else startReverse();
-        } else {
-          active = false;
-          video.pause();
-          if (rafId) cancelAnimationFrame(rafId);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(video);
+    // Play once, pause on last frame
+    video.addEventListener('ended', () => {
+      video.pause();
+    });
 
     video.play().catch(() => {});
 
-    return () => {
-      active = false;
-      if (rafId) cancelAnimationFrame(rafId);
-      video.removeEventListener('ended', onEnded);
-      video.removeEventListener('timeupdate', onTimeUpdate);
-      observer.disconnect();
-    };
+    return () => {};
   }, []);
 
   return (
@@ -97,13 +36,13 @@ export default function HeroSection() {
       {/* Static dark background */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#080808] via-[#0a0a0a] to-[#080808]" />
 
-      {/* Video — right side accent */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[45vw] max-w-[620px] hidden md:block pointer-events-none select-none">
-        {/* Glow behind video */}
-        <div className="absolute inset-0 bg-[#00e5cc]/8 blur-[80px] rounded-full scale-75" />
+      {/* Video — right side, full height */}
+      <div className="absolute right-0 top-0 bottom-0 z-10 w-[55vw] hidden md:block pointer-events-none select-none overflow-hidden">
+        {/* Glow */}
+        <div className="absolute inset-0 bg-[#00e5cc]/5 blur-[100px]" />
         <video
           ref={videoRef}
-          className="w-full h-auto object-contain transition-opacity duration-700 opacity-80 mix-blend-luminosity"
+          className="w-full h-full object-cover transition-opacity duration-700 mix-blend-luminosity"
           style={{ opacity: 0 }}
           muted
           playsInline
@@ -111,9 +50,10 @@ export default function HeroSection() {
         >
           <source src="/hero.mp4" type="video/mp4" />
         </video>
-        {/* Fade left edge into background */}
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#00e5cc]/5 to-[#080808]/90" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 via-transparent to-[#080808]/40" />
+        {/* Fade left edge */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/30 to-transparent" />
+        {/* Fade top and bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/60 via-transparent to-[#080808]/80" />
       </div>
 
       {/* Content — left-aligned */}
