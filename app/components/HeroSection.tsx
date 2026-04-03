@@ -35,23 +35,22 @@ export default function HeroSection() {
 
       {/* Video + Photo stacked — right side accent */}
       <div className="absolute right-0 top-0 bottom-0 z-10 w-[48vw] max-w-[600px] pointer-events-none select-none hidden md:flex items-center overflow-hidden">
-        <div className="relative w-full">
+        <div className="relative w-full" style={{ aspectRatio: '1120/1908' }}>
           <video
             ref={videoRef}
-            className="w-full h-auto block"
+            className="absolute inset-0 w-full h-full object-cover block"
             muted
             playsInline
             preload="auto"
           >
             <source src="/hero.mp4" type="video/mp4" />
           </video>
-          {/* Photo on top — fills exact same box as video */}
           <img
             ref={imageRef}
             src="/helmet.jpg"
             alt=""
-            className="absolute inset-0 w-full h-full object-contain"
-            style={{ opacity: 0, background: '#080808' }}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: 0 }}
           />
         </div>
         {/* Fade left edge */}
