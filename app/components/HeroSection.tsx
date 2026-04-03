@@ -36,13 +36,11 @@ export default function HeroSection() {
       {/* Static dark background */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#080808] via-[#0a0a0a] to-[#080808]" />
 
-      {/* Video — right side, full height */}
-      <div className="absolute right-0 top-0 bottom-0 z-10 w-[55vw] hidden md:block pointer-events-none select-none overflow-hidden">
-        {/* Glow */}
-        <div className="absolute inset-0 bg-[#00e5cc]/5 blur-[100px]" />
+      {/* Video — right side accent, natural aspect ratio */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[50vw] max-w-[680px] pointer-events-none select-none overflow-hidden hidden md:block">
         <video
           ref={videoRef}
-          className="w-full h-full object-cover transition-opacity duration-700 mix-blend-luminosity"
+          className="w-full h-auto transition-opacity duration-700"
           style={{ opacity: 0 }}
           muted
           playsInline
@@ -51,9 +49,25 @@ export default function HeroSection() {
           <source src="/hero.mp4" type="video/mp4" />
         </video>
         {/* Fade left edge */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/20 to-transparent" />
         {/* Fade top and bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/60 via-transparent to-[#080808]/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/50 via-transparent to-[#080808]/70" />
+      </div>
+
+      {/* Mobile video — small, below content */}
+      <div className="absolute right-0 bottom-24 z-10 w-[60vw] pointer-events-none select-none overflow-hidden md:hidden">
+        <video
+          muted
+          playsInline
+          preload="auto"
+          autoPlay
+          className="w-full h-auto opacity-40"
+          onEnded={(e) => (e.target as HTMLVideoElement).pause()}
+        >
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#080808]" />
       </div>
 
       {/* Content — left-aligned */}
