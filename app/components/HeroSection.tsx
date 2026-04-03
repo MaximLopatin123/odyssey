@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoEnded, setVideoEnded] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    const img = imageRef.current;
+    if (!video || !img) return;
 
     video.muted = true;
     video.playsInline = true;
@@ -17,7 +18,7 @@ export default function HeroSection() {
     video.preload = 'auto';
 
     video.addEventListener('ended', () => {
-      setVideoEnded(true);
+      img.style.opacity = '1';
     });
 
     video.play().catch(() => {});
@@ -33,32 +34,34 @@ export default function HeroSection() {
       {/* Static dark background */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#080808] via-[#0a0a0a] to-[#080808]" />
 
-      {/* Video / Photo — right side accent */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[50vw] max-w-[680px] pointer-events-none select-none overflow-hidden hidden md:block">
-        {!videoEnded ? (
+      {/* Video + Photo stacked — right side accent */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[50vw] max-w-[680px] pointer-events-none select-none hidden md:block">
+        <div className="relative w-full">
           <video
             ref={videoRef}
-            className="w-full h-auto"
+            className="w-full h-auto block"
             muted
             playsInline
             preload="auto"
           >
             <source src="/hero.mp4" type="video/mp4" />
           </video>
-        ) : (
+          {/* Photo on top, hidden until video ends */}
           <Image
+            ref={imageRef}
             src="/helmet.jpg"
             alt=""
             width={680}
             height={680}
-            className="w-full h-auto object-contain"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: 0 }}
             priority
           />
-        )}
+        </div>
         {/* Fade left edge */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/20 to-transparent pointer-events-none" />
         {/* Fade top and bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/50 via-transparent to-[#080808]/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/50 via-transparent to-[#080808]/70 pointer-events-none" />
       </div>
 
       {/* Mobile video — small, below content */}
