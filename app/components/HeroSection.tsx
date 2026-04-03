@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,7 +18,7 @@ export default function HeroSection() {
     let rafId: number | null = null;
     let active = true;
     let lastTs = 0;
-    const SPEED = 1.0; // same speed as forward
+    const SPEED = 1.0;
 
     function startReverse() {
       if (!active) return;
@@ -47,7 +46,6 @@ export default function HeroSection() {
       startReverse();
     }
 
-    // Also catch near-end via timeupdate as fallback
     function onTimeUpdate() {
       if (!video) return;
       if (direction === 1 && video.duration && video.currentTime >= video.duration - 0.15) {
@@ -96,38 +94,26 @@ export default function HeroSection() {
       id="hero"
       className="relative min-h-[100dvh] flex items-end overflow-hidden bg-[#080808]"
     >
-      {/* Video background */}
-      <div className="absolute inset-0 z-0">
+      {/* Static dark background */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#080808] via-[#0a0a0a] to-[#080808]" />
+
+      {/* Video — right side accent */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[45vw] max-w-[620px] hidden md:block pointer-events-none select-none">
+        {/* Glow behind video */}
+        <div className="absolute inset-0 bg-[#00e5cc]/8 blur-[80px] rounded-full scale-75" />
         <video
           ref={videoRef}
-          className="w-full h-full object-cover transition-opacity duration-700"
+          className="w-full h-auto object-contain transition-opacity duration-700 opacity-80 mix-blend-luminosity"
           style={{ opacity: 0 }}
           muted
           playsInline
           preload="auto"
-          poster="/helmet.jpg"
         >
           <source src="/hero.mp4" type="video/mp4" />
         </video>
-        {/* Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080808]/95 via-[#080808]/60 to-[#080808]/20 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/40 z-10" />
-      </div>
-
-      {/* Helmet image — right side accent */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[45vw] max-w-[620px] hidden md:block pointer-events-none select-none">
-        {/* Glow behind helmet */}
-        <div className="absolute inset-0 bg-[#00e5cc]/8 blur-[80px] rounded-full scale-75" />
-        <Image
-          src="/helmet.jpg"
-          alt=""
-          width={620}
-          height={620}
-          className="w-full h-auto object-contain opacity-60 mix-blend-luminosity"
-          priority
-        />
-        {/* Teal tint overlay on helmet */}
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#00e5cc]/5 to-[#080808]/80" />
+        {/* Fade left edge into background */}
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#00e5cc]/5 to-[#080808]/90" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 via-transparent to-[#080808]/40" />
       </div>
 
       {/* Content — left-aligned */}
