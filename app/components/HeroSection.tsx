@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -35,7 +34,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#080808] via-[#0a0a0a] to-[#080808]" />
 
       {/* Video + Photo stacked — right side accent */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[50vw] max-w-[680px] pointer-events-none select-none hidden md:block">
+      <div className="absolute right-0 top-0 bottom-0 z-10 w-[48vw] max-w-[600px] pointer-events-none select-none hidden md:flex items-center overflow-hidden">
         <div className="relative w-full">
           <video
             ref={videoRef}
@@ -46,22 +45,19 @@ export default function HeroSection() {
           >
             <source src="/hero.mp4" type="video/mp4" />
           </video>
-          {/* Photo on top — same size as video, hidden until video ends */}
-          <Image
+          {/* Photo on top — fills exact same box as video */}
+          <img
             ref={imageRef}
             src="/helmet.jpg"
             alt=""
-            width={680}
-            height={680}
-            className="absolute inset-0 w-full h-full object-contain"
+            className="absolute inset-0 w-full h-full object-cover"
             style={{ opacity: 0 }}
-            priority
           />
         </div>
         {/* Fade left edge */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/20 to-transparent pointer-events-none" />
         {/* Fade top and bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/50 via-transparent to-[#080808]/70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/70 via-transparent to-[#080808]/70 pointer-events-none" />
       </div>
 
       {/* Mobile video — small, below content */}
