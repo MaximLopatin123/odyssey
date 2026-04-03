@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoEnded, setVideoEnded] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -14,13 +16,8 @@ export default function HeroSection() {
     video.loop = false;
     video.preload = 'auto';
 
-    video.addEventListener('canplay', () => {
-      video.style.opacity = '1';
-    });
-
-    // Play once, pause on last frame
     video.addEventListener('ended', () => {
-      video.pause();
+      setVideoEnded(true);
     });
 
     video.play().catch(() => {});
@@ -36,18 +33,28 @@ export default function HeroSection() {
       {/* Static dark background */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#080808] via-[#0a0a0a] to-[#080808]" />
 
-      {/* Video — right side accent, natural aspect ratio */}
+      {/* Video / Photo — right side accent */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-[50vw] max-w-[680px] pointer-events-none select-none overflow-hidden hidden md:block">
-        <video
-          ref={videoRef}
-          className="w-full h-auto transition-opacity duration-700"
-          style={{ opacity: 0 }}
-          muted
-          playsInline
-          preload="auto"
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
+        {!videoEnded ? (
+          <video
+            ref={videoRef}
+            className="w-full h-auto"
+            muted
+            playsInline
+            preload="auto"
+          >
+            <source src="/hero.mp4" type="video/mp4" />
+          </video>
+        ) : (
+          <Image
+            src="/helmet.jpg"
+            alt=""
+            width={680}
+            height={680}
+            className="w-full h-auto object-contain"
+            priority
+          />
+        )}
         {/* Fade left edge */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/20 to-transparent" />
         {/* Fade top and bottom */}
