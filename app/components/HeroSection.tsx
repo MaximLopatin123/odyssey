@@ -50,8 +50,8 @@ export default function HeroSection() {
             ref={imageRef}
             src="/helmet.jpg"
             alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ opacity: 0 }}
+            className="absolute inset-0 w-full h-full object-contain"
+            style={{ opacity: 0, background: '#080808' }}
           />
         </div>
         {/* Fade left edge */}
